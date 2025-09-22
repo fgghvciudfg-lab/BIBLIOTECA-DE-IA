@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Biblioteca Universal — Único Link</title>
+<style>
+  :root{
+    --bg:#0f1720; --panel:#0b1220; --accent:#00d1b2; --muted:#9aa7b2; --card:#07101a;
+  }
+  body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,var(--bg),#071019);color:#e6eef3;}
+  header{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  h1{margin:0;font-size:20px;color:var(--accent)}
+  .controls{margin-left:auto;display:flex;gap:8px;align-items:center}
+  input,button,select{padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+  .container{display:flex;gap:18px;padding:18px;align-items:flex-start}
+  nav{width:320px;max-height:calc(100vh - 120px);overflow:auto;padding:12px;background:linear-gradient(180deg,var(--panel),#071122);border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+  main{flex:1;max-height:calc(100vh - 120px);overflow:auto;padding:14px;background:linear-gradient(180deg,var(--card),#061019);border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+  h2{margin:8px 0 10px 0;color:#ffd479}
+  .category{margin-bottom:20px}
+  ul{list-style:none;padding:0;margin:0}
+  li{margin:6px 0}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .rss-block{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;margin-bottom:12px}
+  .searchbar{display:flex;gap:8px;align-items:center}
+  .small{font-size:13px;color:var(--muted)}
+  footer{padding:14px;text-align:center;color:var(--muted);font-size:13px}
+  .tag{display:inline-block;padding:4px 8px;border-radius:6px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);margin:4px 4px 0 0;color:var(--muted);font-size:13px}
+  .btn{background:var(--accent);color:#042025;border:none;cursor:pointer}
+  .btn-muted{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+  .card{padding:12px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.005));border:1px solid rgba(255,255,255,0.02)}
+  .meta{font-size:12px;color:var(--muted)}
+  code{background:rgba(255,255,255,0.02);padding:4px 6px;border-radius:4px;color:#a6f6e8}
+  @media(max-width:900px){.container{flex-direction:column}nav{width:100%;order:2}main{order:1}}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 Biblioteca Universal (arquivo único)</h1>
+  <div class="small">Arquivo único HTML com links fixos + blocos RSS automáticos. Salve como <code>biblioteca.html</code>.</div>
+  <div class="controls">
+    <div class="searchbar">
+      <input id="globalSearch" placeholder="Buscar na biblioteca (ex: 'OpenAI', 'CNN', 'medicina')" style="width:360px" oninput="filterLinks()" />
+      <button class="btn" onclick="openGoogle()">Pesquisar no Google</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <!-- Navegação lateral com categorias -->
+  <nav id="nav">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong>Categorias</strong>
+        <span class="meta">links fixos + RSS</span>
+      </div>
+      <div style="margin-top:10px" id="tags">
+        <!-- Tags dinâmicas -->
+      </div>
+    </div>
+
+    <div style="height:12px"></div>
+
+    <div class="card">
+      <strong>Atalhos rápidos</strong>
+      <ul style="margin-top:8px">
+        <li><a href="https://www.google.com" target="_blank">🔎 Google</a></li>
+        <li><a href="https://news.google.com" target="_blank">📰 Google News</a></li>
+        <li><a href="https://scholar.google.com" target="_blank">📚 Google Scholar</a></li>
+        <li><a href="https://translate.google.com" target="_blank">🌐 Google Tradutor</a></li>
+        <li><a href="https://www.wolframalpha.com" target="_blank">➗ Wolfram Alpha</a></li>
+      </ul>
+    </div>
+
+    <div style="height:12px"></div>
+
+    <div class="card">
+      <strong>Busca local</strong>
+      <div class="small" style="margin-top:8px">Use a caixa de busca no topo para filtrar links nesta página.</div>
+    </div>
+  </nav>
+
+  <!-- Conteúdo principal -->
+  <main id="mainContent">
+
+    <!-- Notícias (fixas) -->
+    <section class="category">
+      <h2>🌍 Notícias — portais principais</h2>
+      <div class="cols">
+        <div>
+          <ul id="newsList">
+            <li><a href="https://www.bbc.com/news" target="_blank">BBC News</a></li>
+            <li><a href="https://edition.cnn.com" target="_blank">CNN</a></li>
+            <li><a href="https://www.reuters.com" target="_blank">Reuters</a></li>
+            <li><a href="https://www.nytimes.com" target="_blank">New York Times</a></li>
+            <li><a href="https://www.theguardian.com/international" target="_blank">The Guardian</a></li>
+            <li><a href="https://g1.globo.com" target="_blank">G1 (Globo)</a></li>
+            <li><a href="https://www.aljazeera.com" target="_blank">Al Jazeera</a></li>
+            <li><a href="https://www.lemonde.fr" target="_blank">Le Monde</a></li>
+            <li><a href="https://www.dw.com" target="_blank">DW</a></li>
+            <li><a href="https://www.ft.com" target="_blank">Financial Times</a></li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li><a href="https://www.abc.net.au/news" target="_blank">ABC Australia</a></li>
+            <li><a href="https://www.scmp.com" target="_blank">South China Morning Post</a></li>
+            <li><a href="https://www.hindustantimes.com" target="_blank">Hindustan Times</a></li>
+            <li><a href="https://www.japantimes.co.jp" target="_blank">Japan Times</a></li>
+            <li><a href="https://www.cbc.ca/news" target="_blank">CBC</a></li>
+            <li><a href="https://www.terra.com.br/noticias" target="_blank">Terra</a></li>
+            <li><a href="https://www.elpais.com" target="_blank">El País</a></li>
+            <li><a href="https://www.corriere.it" target="_blank">Corriere della Sera</a></li>
+            <li><a href="https://www.lefigaro.fr" target="_blank">Le Figaro</a></li>
+            <li><a href="https://www.npr.org" target="_blank">NPR</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- RSS Automáticos -->
+    <section class="category">
+      <h2>🔄 Feeds Automáticos (carregam as últimas notícias)</h2>
+
+      <div class="rss-block" id="rssBBC"><strong>BBC (RSS)</strong><div id="bbc-feed" class="small"></div></div>
+      <div class="rss-block" id="rssCNN"><strong>CNN (RSS)</strong><div id="cnn-feed" class="small"></div></div>
+      <div class="rss-block" id="rssReuters"><strong>Reuters (RSS)</strong><div id="reuters-feed" class="small"></div></div>
+      <div class="rss-block" id="rssNASA"><strong>NASA (RSS)</strong><div id="nasa-feed" class="small"></div></div>
+    </section>
+
+    <!-- Inteligência Artificial -->
+    <section class="category">
+      <h2>🧠 Inteligência Artificial & ML</h2>
+      <div class="cols">
+        <div class="card">
+          <strong>Pesquisa & Instituições</strong>
+          <ul>
+            <li><a href="https://openai.com/research" target="_blank">OpenAI Research</a></li>
+            <li><a href="https://deepmind.com/research" target="_blank">DeepMind Research</a></li>
+            <li><a href="https://ai.google/research" target="_blank">Google AI Research</a></li>
+            <li><a href="https://research.facebook.com" target="_blank">Meta Research</a></li>
+            <li><a href="https://ai.stanford.edu" target="_blank">Stanford AI Lab</a></li>
+            <li><a href="https://www.mit.edu/research/artificial-intelligence/" target="_blank">MIT AI</a></li>
+            <li><a href="https://arxiv.org/list/cs.AI/recent" target="_blank">arXiv - cs.AI</a></li>
+            <li><a href="https://huggingface.co" target="_blank">Hugging Face</a></li>
+            <li><a href="https://paperswithcode.com" target="_blank">Papers With Code</a></li>
+            <li><a href="https://www.kaggle.com" target="_blank">Kaggle</a></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <strong>Ferramentas & Frameworks</strong>
+          <ul>
+            <li><a href="https://pytorch.org" target="_blank">PyTorch</a></li>
+            <li><a href="https://www.tensorflow.org" target="_blank">TensorFlow</a></li>
+            <li><a href="https://scikit-learn.org" target="_blank">scikit-learn</a></li>
+            <li><a href="https://onnx.ai" target="_blank">ONNX</a></li>
+            <li><a href="https://www.tensorflow.org/hub" target="_blank">TensorFlow Hub</a></li>
+            <li><a href="https://www.deeplearning.ai" target="_blank">deeplearning.ai</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ciência -->
+    <section class="category">
+      <h2>🔬 Ciência & Tecnologia</h2>
+      <ul>
+        <li><a href="https://www.nasa.gov" target="_blank">NASA</a></li>
+        <li><a href="https://www.esa.int" target="_blank">European Space Agency (ESA)</a></li>
+        <li><a href="https://www.nature.com" target="_blank">Nature</a></li>
+        <li><a href="https://www.sciencemag.org" target="_blank">Science Magazine</a></li>
+        <li><a href="https://www.sciencedaily.com" target="_blank">ScienceDaily</a></li>
+        <li><a href="https://ieeexplore.ieee.org" target="_blank">IEEE Xplore</a></li>
+      </ul>
+    </section>
+
+    <!-- Educação e Universidades -->
+    <section class="category">
+      <h2>🎓 Universidades, Cursos & Pesquisa</h2>
+      <ul>
+        <li><a href="https://ocw.mit.edu" target="_blank">MIT OpenCourseWare</a></li>
+        <li><a href="https://www.coursera.org" target="_blank">Coursera</a></li>
+        <li><a href="https://www.edx.org" target="_blank">edX</a></li>
+        <li><a href="https://www.harvard.edu" target="_blank">Harvard University</a></li>
+        <li><a href="https://www.stanford.edu" target="_blank">Stanford University</a></li>
+        <li><a href="https://www.ox.ac.uk" target="_blank">University of Oxford</a></li>
+        <li><a href="https://www.cam.ac.uk" target="_blank">University of Cambridge</a></li>
+      </ul>
+    </section>
+
+    <!-- Direito, Medicina, Economia -->
+    <section class="category">
+      <h2>⚖️ Direito / 🩺 Medicina / 💼 Economia</h2>
+      <div class="cols">
+        <div class="card">
+          <strong>Direito & Legislação</strong>
+          <ul>
+            <li><a href="https://www.loc.gov" target="_blank">Library of Congress</a></li>
+            <li><a href="https://www.icj-cij.org" target="_blank">International Court of Justice</a></li>
+            <li><a href="https://www.un.org/en/sections/issues-depth/human-rights/" target="_blank">ONU - Direitos Humanos</a></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <strong>Medicina & Saúde</strong>
+          <ul>
+            <li><a href="https://www.who.int" target="_blank">OMS (WHO)</a></li>
+            <li><a href="https://pubmed.ncbi.nlm.nih.gov" target="_blank">PubMed</a></li>
+            <li><a href="https://www.nejm.org" target="_blank">NEJM</a></li>
+            <li><a href="https://www.cdc.gov" target="_blank">CDC</a></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <strong>Economia & Finanças</strong>
+          <ul>
+            <li><a href="https://www.worldbank.org" target="_blank">World Bank</a></li>
+            <li><a href="https://www.imf.org" target="_blank">IMF</a></li>
+            <li><a href="https://www.bloomberg.com" target="_blank">Bloomberg</a></li>
+            <li><a href="https://www.ft.com" target="_blank">Financial Times</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Idiomas & Tradução -->
+    <section class="category">
+      <h2>🌐 Idiomas & Tradução</h2>
+      <ul>
+        <li><a href="https://translate.google.com" target="_blank">Google Translate</a></li>
+        <li><a href="https://www.deepl.com/translator" target="_blank">DeepL</a></li>
+        <li><a href="https://www.duolingo.com" target="_blank">Duolingo</a></li>
+        <li><a href="https://www.wiktionary.org" target="_blank">Wiktionary</a></li>
+      </ul>
+    </section>
+
+    <!-- Dados & Estatísticas -->
+    <section class="category">
+      <h2>📊 Dados & Estatísticas</h2>
+      <ul>
+        <li><a href="https://ourworldindata.org" target="_blank">Our World in Data</a></li>
+        <li><a href="https://data.un.org" target="_blank">UN Data</a></li>
+        <li><a href="https://www.statista.com" target="_blank">Statista</a></li>
+        <li><a href="https://www.worldometers.info" target="_blank">Worldometer</a></li>
+      </ul>
+    </section>
+
+    <!-- Ferramentas Matemáticas / Cálculos -->
+    <section class="category">
+      <h2>➗ Ferramentas Matemáticas</h2>
+      <ul>
+        <li><a href="https://api.mathjs.org" target="_blank">math.js (Web API)</a></li>
+        <li><a href="https://www.symbolab.com" target="_blank">Symbolab</a></li>
+        <li><a href="https://www.desmos.com/calculator" target="_blank">Desmos</a></li>
+      </ul>
+    </section>
+
+    <footer>
+      <div class="small">Salve este arquivo como <code>biblioteca.html</code>. Para ter um link público, faça deploy (Netlify/GitHub Pages). RSS atualiza ao abrir.</div>
+      <div style="height:8px"></div>
+      <div class="small">Observação: se quer que a biblioteca <em>salve</em> os conteúdos automaticamente (por exemplo salvar últimas notícias em JSON para a IA ler), será necessário um pequeno servidor ou GitHub Action — eu te mostro como.</div>
+    </footer>
+  </main>
+</div>
+
+<script>
+/*
+  Biblioteca única:
+  - Busca RSS via proxy "allorigins" para contornar CORS quando necessário.
+  - Filtra links locais com a caixa de busca.
+  - Abre Google com termo pesquisado (abre nova aba).
+*/
+
+// Lista de feeds (RSS) públicos — adicione/remova conforme quiser
+const RSS_FEEDS = [
+  {id:"bbc-feed", url:"https://feeds.bbci.co.uk/news/rss.xml", title:"BBC"},
+  {id:"cnn-feed", url:"http://rss.cnn.com/rss/cnn_topstories.rss", title:"CNN"},
+  {id:"reuters-feed", url:"https://www.reutersagency.com/feed/?best-topics=top-news", title:"Reuters"},
+  {id:"nasa-feed", url:"https://www.nasa.gov/rss/dyn/breaking_news.rss", title:"NASA"}
+];
+
+// Proxy para evitar CORS (AllOrigins). Se travar, pode trocar por https://api.allorigins.win/raw?url=
+const PROXY = "https://api.allorigins.win/raw?url=";
+
+// Função para carregar cada feed e renderizar
+async function loadFeed(feed){
+  const target = document.getElementById(feed.id);
+  if(!target) return;
+  try{
+    const resp = await fetch(PROXY + encodeURIComponent(feed.url));
+    if(!resp.ok) throw new Error("fetch fail");
+    const txt = await resp.text();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(txt, "text/xml");
+    const items = Array.from(xml.querySelectorAll("item")).slice(0,8);
+    if(items.length === 0){
+      target.innerHTML = "<p class='small'>Sem itens (ou feed bloqueado)</p>";
+      return;
+    }
+    const ul = document.createElement("ul");
+    items.forEach(it=>{
+      const title = it.querySelector("title") ? it.querySelector("title").textContent : "(sem título)";
+      const link = it.querySelector("link") ? it.querySelector("link").textContent : null;
+      const li = document.createElement("li");
+      if(link){
+        li.innerHTML = `<a href="${link}" target="_blank">${escapeHtml(title)}</a>`;
+      } else {
+        li.textContent = title;
+      }
+      ul.appendChild(li);
+    });
+    target.innerHTML = "";
+    target.appendChild(ul);
+  }catch(e){
+    target.innerHTML = "<p class='small'>Erro ao carregar feed — verifique CORS/proxy</p>";
+    console.error("Feed error", feed.url, e);
+  }
+}
+
+// carregamento inicial de RSS
+RSS_FEEDS.forEach(feed => loadFeed(feed));
+
+// BUSCA LOCAL (filtra todos os links do documento)
+function filterLinks(){
+  const q = document.getElementById("globalSearch").value.trim().toLowerCase();
+  if(!q){
+    // mostra tudo
+    Array.from(document.querySelectorAll("main a")).forEach(a=>a.style.display="");
+    return;
+  }
+  Array.from(document.querySelectorAll("main a")).forEach(a=>{
+    const txt = (a.textContent + " " + (a.href || "")).toLowerCase();
+    a.style.display = txt.includes(q) ? "" : "none";
+  });
+}
+
+// pesquisa no Google (abre aba nova)
+function openGoogle(){
+  const q = document.getElementById("globalSearch").value.trim();
+  const url = "https://www.google.com/search?q=" + encodeURIComponent(q || "");
+  window.open(url, "_blank");
+}
+
+// util
+function escapeHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+// opcional: monta lista de tags/categories lateral (extra)
+(function buildTags(){
+  const cats = Array.from(document.querySelectorAll("main h2")).map(h=>h.textContent.trim());
+  const container = document.getElementById("tags");
+  cats.forEach(c=>{
+    const span = document.createElement("span");
+    span.className = "tag";
+    span.textContent = c;
+    span.onclick = ()=>{ document.getElementById("globalSearch").value = c; filterLinks(); };
+    container.appendChild(span);
+  });
+})();
+</script>
+</body>
+</html>
